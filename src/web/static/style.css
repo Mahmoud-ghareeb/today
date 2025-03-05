@@ -1,0 +1,87 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+.title-container {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.date-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notes-date {
+    font-size: 14px;
+    color: #666;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.speech-button {
+    background-color: #251748;
+    border: none;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.speech-button:hover {
+    background-color: #45a049;
+}
+
+.speech-icon {
+    font-size: 45px;
+    color: white;
+}
+
+#status {
+    text-align: left;
+    color: #251748;
+    margin-left: 2vw;
+}
+
+.tox-hugerte{
+    margin: 0px auto;
+}

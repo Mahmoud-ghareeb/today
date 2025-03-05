@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Today</title>
+    <meta name="description" content="record your dialy day in privacy">
+    <link rel="shortcut icon" href="/static/logo.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/static/style.css?v1">
+    <script src="https://cdn.jsdelivr.net/npm/hugerte@1/hugerte.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <div class="header-container">
+        <div class="icon-container">
+            <img src="/static/logo.png" alt="Icon" class="icon" />
+        </div>
+        <div class="title-container">
+            <h1 class="title" id="curr-date">loading ...</h1>
+        </div>
+        <button class="speech-button" id="recordButton">
+            <span class="speech-icon">🎤</span>
+        </button>
+    </div>
+
+    <div class="settings" style="display: none;">
+        <div>
+            <label for="chunkSelector">Chunk size (ms):</label>
+            <select id="chunkSelector">
+                <option value="500">500 ms</option>
+                <option value="1000" selected>1000 ms</option>
+                <option value="2000">2000 ms</option>
+                <option value="3000">3000 ms</option>
+                <option value="4000">4000 ms</option>
+                <option value="5000">5000 ms</option>
+            </select>
+        </div>
+        <div>
+            <label for="websocketInput">WebSocket URL:</label>
+            <input id="websocketInput" type="text" value="ws://localhost:8005/asr" />
+        </div>
+    </div>
+    
+    <p id="status">Disconnected from the WebSocket server. (click on speech to start.)</p>
+    
+    <div id="editorjs"></div>
+
+    <div id="linesTranscript"></div>
+
+    <script src="/static/websocket.js"></script>
+</body>
+
+</html>
