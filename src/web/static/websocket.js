@@ -178,7 +178,6 @@ function setupWebSocket() {
             reject(new Error("Error connecting to WebSocket"));
         };
 
-        // Handle messages from server
         websocket.onmessage = (event) => {
             const data = JSON.parse(event.data);
             
@@ -189,7 +188,7 @@ function setupWebSocket() {
                 remaining_time_transcription = 0,
                 remaining_time_diarization = 0
             } = data;
-            // console.log(lines)
+            
             renderLinesWithBuffer(
                 lines, 
                 buffer_diarization, 
@@ -230,14 +229,13 @@ async function renderLinesWithBuffer(lines, buffer_diarization, buffer_transcrip
     
     // let textContent = await fetchAndDisplayText()
     let textContent = hugerte.get('editorjs').getContent();
-    let newText = lines[0].text
-    // console.log(textContent)
-    // if (buffer_transcription) {
-    //     textContent += `${buffer_transcription}`;
-    // }
-    // console.log(lines)
-    // console.log(lines[0].text)
+    console.log(lines[0].text)
+    let newText = `${lines[0].text}`
     
+    if (buffer_transcription) {
+        newText += `<span color="red"> ${buffer_transcription} </span>`;
+    }
+    console.log(buffer_transcription)
     const closingTagIndex = textContent.lastIndexOf('</p>');
     if (closingTagIndex !== -1) {
         textContent = textContent.slice(0, closingTagIndex) + newText + textContent.slice(closingTagIndex);

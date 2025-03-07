@@ -51,11 +51,8 @@ async def lifespan(app: FastAPI):
     else:
         asr, tokenizer = None, None
 
-    if config["app"]["diarization"]:
-        from diarization.diarization_online import DiartDiarization
-        diarization = DiartDiarization(SAMPLE_RATE)
-    else :
-        diarization = None
+    diarization = None
+    
     yield
 
 app = FastAPI(lifespan=lifespan)
@@ -250,6 +247,6 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
-        "main:app", host=config["app"]["host"], port=config["app"]["port"], reload=True,
+        "main:app", host=config["app"]["host"], port=config["app"]["port"],
         log_level="info"
     )

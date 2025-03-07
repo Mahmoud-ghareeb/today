@@ -1,0 +1,14 @@
+services:
+  today:
+    image: today
+    command: python main.py
+    restart: unless-stopped
+    ports:
+      - 8005:8005
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
