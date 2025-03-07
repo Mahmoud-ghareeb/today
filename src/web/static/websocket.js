@@ -229,20 +229,26 @@ async function renderLinesWithBuffer(lines, buffer_diarization, buffer_transcrip
     
     // let textContent = await fetchAndDisplayText()
     let textContent = hugerte.get('editorjs').getContent();
-    console.log(lines[0].text)
+    // console.log(lines[0].text)
     let newText = `${lines[0].text}`
     
     if (buffer_transcription) {
-        newText += `<span color="red"> ${buffer_transcription} </span>`;
+        newText += `<span style="opacity: 0.5; color: gray;"> ${buffer_transcription} </span>`;
     }
-    console.log(buffer_transcription)
+
+    textContent = textContent.replace(/<span style="opacity: 0.5; color: gray;">.*?<\/span>/g, "");
+
+    // console.log(buffer_transcription)
     const closingTagIndex = textContent.lastIndexOf('</p>');
     if (closingTagIndex !== -1) {
         textContent = textContent.slice(0, closingTagIndex) + newText + textContent.slice(closingTagIndex);
+    } else {
+        textContent = newText;
     }
 
-    hugerte.get('editorjs').setContent("")
-    hugerte.get('editorjs').setContent(textContent.trim());
+    // console.log(textContent)
+    hugerte.get('editorjs').setContent("");
+    hugerte.get('editorjs').setContent(textContent);
 }
 
 async function startRecording() {

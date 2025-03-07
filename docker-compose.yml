@@ -1,5 +1,6 @@
 services:
   today:
+    build: .
     image: today
     command: python main.py
     restart: unless-stopped
