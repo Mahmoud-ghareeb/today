@@ -17,6 +17,8 @@ from src.whisper.whisper_online import backend_factory, online_factory, add_shar
 from src.whisper.utils import *
 from src.whisper.state import SharedState
 
+from src.llm.llm import *
+
 import math
 import logging
 import yaml
@@ -44,7 +46,7 @@ MAX_BYTES_PER_SEC = 32000 * 5
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global asr, tokenizer, diarization 
+    global asr, tokenizer, diarization, llm
 
     if config["app"]["transcription"]:
         asr, tokenizer = backend_factory(args)
@@ -52,6 +54,8 @@ async def lifespan(app: FastAPI):
         asr, tokenizer = None, None
 
     diarization = None
+    
+    llm = get_llm()
     
     yield
 

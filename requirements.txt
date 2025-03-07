@@ -6,3 +6,4 @@ fastapi==0.115.11
 ffmpeg-python==0.2.0
 uvicorn[standard]==0.34.0
 silero-vad==5.1.2
+vllm==0.7.3
