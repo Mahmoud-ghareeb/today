@@ -14,9 +14,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from src.whisper.whisper_online import backend_factory, online_factory, add_shared_args
-from src.whisper.utils import *
-from src.whisper.state import SharedState
+from src.asr.whisper_online import backend_factory, online_factory, add_shared_args
+from src.asr.utils import *
+from src.asr.state import SharedState
 
 from src.llm.llm import *
 
