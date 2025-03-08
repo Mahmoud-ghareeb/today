@@ -75,7 +75,7 @@ hugerte.init({
     width: "50vw",
     menubar: false,
     plugins: 'lists link image table code help',
-    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | savebutton',
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | savebutton | ConvertToDiary',
     setup: function (editor) {
         editor.ui.registry.addButton('savebutton', {
             text: 'Save',
@@ -115,6 +115,51 @@ hugerte.init({
                             timerProgressBar: true,
                         });
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while saving the file.',
+                        toast: true,
+                        position: 'bottom-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                });
+            }
+        });
+
+        editor.ui.registry.addButton('ConvertToDiary', {
+            text: 'Diary',
+            icon: 'type',
+            onAction: function () {
+                const content = editor.getContent();
+
+                fetch('/diary', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ content: content }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    editor.setContent("")
+                    editor.setContent(data["result"][0]["outputs"][0]["text"])
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Saved!',
+                        text: 'Your diary has been updated.',
+                        toast: true,
+                        position: 'bottom-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);

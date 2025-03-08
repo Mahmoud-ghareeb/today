@@ -7,6 +7,7 @@ from time import time
 from contextlib import asynccontextmanager
 from pydantic import BaseModel
 from datetime import datetime
+from dotenv import load_dotenv
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.responses import HTMLResponse
@@ -25,6 +26,11 @@ import yaml
 import traceback
 import os
 
+from huggingface_hub import login
+login(token=os.getenv("HF_TOKEN"))
+
+
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logging.getLogger().setLevel(logging.WARNING)
@@ -246,6 +252,14 @@ async def get_content(timestamp):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save the file: {str(e)}")
+
+@app.post("/diary")
+async def convert_to_diary(request: SaveRequest):
+    context = request.content
+    prompt = config["app"]["prompts"]["convert_to_diary"].format(context=context)
+
+    return {"result": llm.generate(prompt)}
+
 
 if __name__ == "__main__":
     import uvicorn

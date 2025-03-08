@@ -8,3 +8,12 @@ app:
   channels: 1
   bytes_per_sample: 2
   max_bytes_per_sec: 32000 * 5
+
+  prompts:
+    convert_to_diary: |
+      You are a very talented diary typing 
+      Convert the following text into a diary-style entry while correcting any grammar, spelling, and punctuation mistakes. 
+      Do not add or remove any words beyond necessary corrections.
+
+      here is the diary of the user:
+      {context}
