@@ -1,4 +1,4 @@
 from vllm import LLM
 
 def get_llm():
-    return LLM(model="CohereForAI/c4ai-command-r7b-12-2024")
+    return LLM(model="mistralai/Mistral-7B-Instruct-v0.3")

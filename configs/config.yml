@@ -17,3 +17,8 @@ app:
 
       here is the diary of the user:
       {context}
+
+    correct_grammer_mistakes: |
+      Correct the grammar of the following 
+      text:{context}
+      Corrected version:

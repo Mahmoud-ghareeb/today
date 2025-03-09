@@ -225,7 +225,7 @@ os.makedirs("diaries", exist_ok=True)
 @app.post("/save")
 async def save_content(request: SaveRequest):
     try:
-        timestamp = datetime.now().strftime("%d_%m_%Y")
+        timestamp = datetime.now().strftime("%Y_%m_%d")
         filename = f"diaries/diary_{timestamp}.txt"
 
         with open(filename, "w", encoding="utf-8") as file:
@@ -239,7 +239,7 @@ async def save_content(request: SaveRequest):
 async def get_content(timestamp):
     try:
         if not timestamp:
-            timestamp = datetime.now().strftime("%d_%m_%Y")
+            timestamp = datetime.now().strftime("%Y_%m_%d")
 
         filename = f"diaries/diary_{timestamp}.txt"
         if os.path.exists(filename):
@@ -247,7 +247,7 @@ async def get_content(timestamp):
                 data = file.read()
 
             return {"success": True, "data": data}
-        
+
         return {"success": True, "data": ""}
     
     except Exception as e:
@@ -258,6 +258,14 @@ async def convert_to_diary(request: SaveRequest):
     context = request.content
     prompt = config["app"]["prompts"]["convert_to_diary"].format(context=context)
 
+    return {"result": llm.generate(prompt)}
+
+@app.post("/correct_mistakes")
+async def convert_to_diary(request: SaveRequest):
+    context = request.content
+    prompt = config["app"]["prompts"]["correct_grammer_mistakes"].format(context=context)
+
+    print(prompt)
     return {"result": llm.generate(prompt)}
 
 
