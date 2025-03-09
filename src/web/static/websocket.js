@@ -19,8 +19,15 @@ const formattedDate = date.toLocaleString('en-US', {
     year: 'numeric',
 });
 
-function getFormattedDate() {
-    let now = new Date();
+function getFormattedDate(isDate="") {
+    let now;
+    if (isDate)
+    {
+        now = new Date(isDate);
+    } else {
+        now = new Date();
+    }
+        
     let day = String(now.getDate()).padStart(2, '0');
     let month = String(now.getMonth() + 1).padStart(2, '0');
     let year = now.getFullYear();
@@ -28,8 +35,8 @@ function getFormattedDate() {
     return `${year}_${month}_${day}`;
 }
 
-document.getElementById("curr-date").innerHTML = "Diary - " + formattedDate
-
+document.getElementById("curr-date").innerHTML = "Diary - " + formattedDate;
+document.getElementById("normal-date").innerHTML = getFormattedDate();
 
 chunkSelector.addEventListener("change", () => {
     chunkDuration = parseInt(chunkSelector.value);
@@ -75,7 +82,7 @@ hugerte.init({
     width: "50vw",
     menubar: false,
     plugins: 'lists link image table code help',
-    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | savebutton | CorrectMistakes | CalendarButton',
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | savebutton CalendarButton | CorrectMistakes',
     setup: function (editor) {
         editor.on('init', function () {
             pull_current_diary();
@@ -99,12 +106,14 @@ hugerte.init({
             icon: 'save',
             onAction: function () {
                 const content = editor.getContent();
+                const currDate = document.getElementById("normal-date").innerHTML
+                timestamp = currDate.replaceAll("-", "_");
                 fetch('/save', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ content: content }),
+                    body: JSON.stringify({ content: content, timestamp: timestamp }),
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -126,12 +135,14 @@ hugerte.init({
             icon: 'correction',
             onAction: function () {
                 const content = editor.getContent();
+                const currDate = document.getElementById("normal-date").innerHTML
+                timestamp = currDate.replaceAll("-", "_");
                 fetch('/correct_mistakes', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ content: content }),
+                    body: JSON.stringify({ content: content, timestamp: timestamp }),
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -177,7 +188,8 @@ hugerte.init({
                                         day: 'numeric',
                                         year: 'numeric',
                                     });
-                                    document.getElementById("curr-date").innerHTML = "Diary - " + displayFormattedDate
+                                    document.getElementById("curr-date").innerHTML = "Diary - " + displayFormattedDate;
+                                    document.getElementById("normal-date").innerHTML = getFormattedDate(dateStr);
                                     showAlert('success', 'Loaded!', 'Your diary content has been loaded successfully.');
                                 } else {
                                     showAlert('error', 'Error', 'No content found for the selected date.');
@@ -311,7 +323,7 @@ async function renderLinesWithBuffer(lines, buffer_diarization, buffer_transcrip
 
     hugerte.get('editorjs').setContent("");
     hugerte.get('editorjs').setContent(textContent);
-    
+
 }
 
 async function startRecording() {

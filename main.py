@@ -61,7 +61,7 @@ async def lifespan(app: FastAPI):
 
     diarization = None
     
-    llm = get_llm()
+    # llm = get_llm()
     
     yield
 
@@ -219,21 +219,23 @@ async def websocket_endpoint(websocket: WebSocket):
 
 class SaveRequest(BaseModel):
     content: str
+    timestamp: str
 
 os.makedirs("diaries", exist_ok=True)
 
 @app.post("/save")
 async def save_content(request: SaveRequest):
-    try:
-        timestamp = datetime.now().strftime("%Y_%m_%d")
+    # try:
+        timestamp = request.timestamp
+        print(timestamp)
         filename = f"diaries/diary_{timestamp}.txt"
 
         with open(filename, "w", encoding="utf-8") as file:
             file.write(request.content)
 
         return {"success": True, "message": "File saved successfully!", "filename": filename}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save the file: {str(e)}")
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=f"Failed to save the file: {str(e)}")
     
 @app.get("/get")
 async def get_content(timestamp):
@@ -265,7 +267,6 @@ async def convert_to_diary(request: SaveRequest):
     context = request.content
     prompt = config["app"]["prompts"]["correct_grammer_mistakes"].format(context=context)
 
-    print(prompt)
     return {"result": llm.generate(prompt)}
 
 
