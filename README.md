@@ -17,7 +17,7 @@ Today is a FastAPI-based application that enables users to transcribe and store 
 ## Installation
 ### Prerequisites
 Ensure you have the following installed:
-- Python 3.8+
+- Python 3.12
 - FFmpeg
 - Whisper ASR dependencies
 - Hugging Face API Token (for LLM access)
