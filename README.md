@@ -21,6 +21,7 @@ Ensure you have the following installed:
 - FFmpeg
 - Whisper ASR dependencies
 - Hugging Face API Token (for LLM access)
+- cudnn
 
 ### Setup
 1. create conda env
