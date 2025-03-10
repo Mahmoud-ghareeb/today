@@ -3,6 +3,7 @@
 Today is a FastAPI-based application that enables users to transcribe and store their diary entries through an online speech-to-text system. 
 
 ![Today Web App](src/web/static/app.png)
+
 ## Features
 - **Speech-to-Text Transcription**: Uses Whisper ASR for converting spoken words into text.
 - **Real-time Processing**: Utilizes WebSocket connections to process audio streams in real time.
@@ -34,7 +35,7 @@ conda activate today
 ```
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 ```
-3. install dependecies
+3. install dependencies
 ```
 sudo apt install portaudio19-dev && python3-pyaudio
 ```
@@ -71,19 +72,21 @@ python main.py
 4. Retrieve and edit past entries as needed.
 5. Use the AI-powered grammar correction and diary formatting features.
 
-## Future Enhancements
-- dark mode.
-- chat with your diaries.
-- Support for multiple languages.
+## Under Development
+- [ ] Correct Mistakes
+- [ ] Diary Formatting
+- [ ] Docker Support
 
-## License
-This project is licensed under the MIT License.
+## Todos
+- [ ] Dark mode
+- [ ] Chat feature
+
+## Future Enhancements
+- Support for multiple languages.
 
 ## Contributions
 Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ## Contact
-For any questions or support, reach out to `mahmoudghareeb11111@gmail.com`.
-
-
+For any questions or support, reach out to `mahmoudghareeb11111@gmail.com`. 
 
