@@ -61,7 +61,7 @@ async def lifespan(app: FastAPI):
 
     diarization = None
     
-    # llm = get_llm()
+    llm = get_llm()
     
     yield
 

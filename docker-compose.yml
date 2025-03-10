@@ -5,7 +5,7 @@ services:
     command: python main.py
     restart: unless-stopped
     ports:
-      - 8005:8005
+      - 8008:8008
     deploy:
       resources:
         reservations:

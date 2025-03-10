@@ -2,7 +2,7 @@ let isRecording = false;
 let websocket = null;
 let recorder = null;
 let chunkDuration = 1000;
-let websocketUrl = "ws://localhost:8005/asr";
+let websocketUrl = "ws://localhost:8008/asr";
 let userClosing = false;
 
 const statusText = document.getElementById("status");
