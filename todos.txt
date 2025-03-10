@@ -1,4 +1,3 @@
 - dark mode
-- calender
 - convert to diary
 - chat
