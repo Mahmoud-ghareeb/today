@@ -73,8 +73,8 @@ python main.py
 5. Use the AI-powered grammar correction and diary formatting features.
 
 ## Under Development
-- [ ] Correct Mistakes
-- [ ] Diary Formatting
+- [x] Correct Mistakes
+- [x] Diary Formatting
 - [ ] Docker Support
 
 ## Todos
