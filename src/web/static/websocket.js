@@ -82,7 +82,7 @@ hugerte.init({
     width: "50vw",
     menubar: false,
     plugins: 'lists link image table code help',
-    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | savebutton CalendarButton | CorrectMistakes',
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | savebutton CalendarButton | CorrectMistakes ConvertDiary',
     setup: function (editor) {
         editor.on('init', function () {
             pull_current_diary();
@@ -132,7 +132,6 @@ hugerte.init({
 
         editor.ui.registry.addButton('CorrectMistakes', {
             text: 'Correct',
-            icon: 'correction',
             onAction: function () {
                 const content = editor.getContent();
                 const currDate = document.getElementById("normal-date").innerHTML
@@ -146,8 +145,37 @@ hugerte.init({
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.result && data.result[0] && data.result[0].outputs && data.result[0].outputs[0] && data.result[0].outputs[0].text) {
-                        editor.setContent(data.result[0].outputs[0].text);
+                    if (data.result) {
+                        editor.setContent(data.result);
+                        showAlert('success', 'Corrected!', 'Your diary has been corrected successfully.');
+                    } else {
+                        showAlert('error', 'Error', 'No corrected content returned.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAlert('error', 'Error', 'An error occurred while correcting the file.');
+                });
+            }
+        });
+
+        editor.ui.registry.addButton('ConvertDiary', {
+            text: 'Diary',
+            onAction: function () {
+                const content = editor.getContent();
+                const currDate = document.getElementById("normal-date").innerHTML
+                timestamp = currDate.replaceAll("-", "_");
+                fetch('/diary', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ content: content, timestamp: timestamp }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result) {
+                        editor.setContent(data.result);
                         showAlert('success', 'Corrected!', 'Your diary has been corrected successfully.');
                     } else {
                         showAlert('error', 'Error', 'No corrected content returned.');
@@ -167,6 +195,9 @@ hugerte.init({
                 flatpickr("#datePicker", {
                     dateFormat: "Y-m-d",
                     defaultDate: "today",
+                    appendTo: document.body,
+                    positionElement: calendarButton,
+                    static: true,
                     onChange: function (selectedDates, dateStr) {
                         if (dateStr) {
                             const formattedDate = dateStr.replaceAll("-", "_");

@@ -11,14 +11,20 @@ app:
 
   prompts:
     convert_to_diary: |
-      You are a very talented diary typing 
-      Convert the following text into a diary-style entry while correcting any grammar, spelling, and punctuation mistakes. 
-      Do not add or remove any words beyond necessary corrections.
+      You are a diary formatting specialist. Transform the following text into a well-structured diary entry with:
+      - Appropriate headings and subheadings to organize the content
+      - Properly formatted paragraphs
+      - HTML markup for structure (<h1>, <h2>, <p>, etc.)
+      - Corrected grammar and improved flow
 
-      here is the diary of the user:
-      {context}
+      Don't add any explanations or additional content beyond the restructured text.
+      Maintain the original meaning and key points.
+
+      Text: {context}
+      Formatted diary entry:
 
     correct_grammer_mistakes: |
-      Correct the grammar of the following 
+      You are a grammar analyst. Please reply with the following text with all grammar errors fixed.
+      Don't add any explanations or additional content beyond the corrected text.
       text:{context}
       Corrected version:

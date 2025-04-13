@@ -1,4 +1,4 @@
-from vllm import LLM
+from vllm import LLM, SamplingParams
 
 def get_llm():
-    return LLM(model="mistralai/Mistral-7B-Instruct-v0.3")
+    return LLM(model="meta-llama/Llama-3.1-8B-Instruct")

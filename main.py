@@ -259,15 +259,21 @@ async def get_content(timestamp):
 async def convert_to_diary(request: SaveRequest):
     context = request.content
     prompt = config["app"]["prompts"]["convert_to_diary"].format(context=context)
-
-    return {"result": llm.generate(prompt)}
+    sam = SamplingParams(temperature=0.0, max_tokens=1024)
+    results = llm.generate(prompt, sam)
+    res = results[0].outputs[0].text
+    
+    return {"result": res}
 
 @app.post("/correct_mistakes")
 async def convert_to_diary(request: SaveRequest):
     context = request.content
     prompt = config["app"]["prompts"]["correct_grammer_mistakes"].format(context=context)
-
-    return {"result": llm.generate(prompt)}
+    sam = SamplingParams(temperature=0.0, max_tokens=1024, stop=["</p>", "---", "==="])
+    results = llm.generate(prompt, sam)
+    res = results[0].outputs[0].text
+    
+    return {"result": res}
 
 
 if __name__ == "__main__":
