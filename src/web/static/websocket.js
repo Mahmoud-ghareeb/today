@@ -76,13 +76,239 @@ function pull_current_diary(){
     });
 }
 
+function initHeaderCalendar() {
+    const calendarBtn = document.getElementById('headerCalendarBtn');
+    
+    
+    if (!calendarBtn) {
+        
+        const titleContainer = document.querySelector('.title-container');
+        if (!titleContainer) {
+            console.error("Title container not found");
+            return;
+        }
+        
+        
+        const newCalendarBtn = document.createElement('button');
+        newCalendarBtn.setAttribute('id', 'headerCalendarBtn');
+        newCalendarBtn.setAttribute('class', 'calendar-icon-btn');
+        newCalendarBtn.innerHTML = '<span class="calendar-icon">📅</span>';
+        
+        
+        const titleElement = titleContainer.querySelector('h1');
+        if (titleElement) {
+            titleElement.insertAdjacentElement('afterend', newCalendarBtn);
+        } else {
+            titleContainer.appendChild(newCalendarBtn);
+        }
+    }
+    
+    
+    let datePickerContainer = document.getElementById('headerDatePickerContainer');
+    if (!datePickerContainer) {
+        datePickerContainer = document.createElement('div');
+        datePickerContainer.setAttribute('id', 'headerDatePickerContainer');
+        datePickerContainer.style.display = 'none';
+        datePickerContainer.style.position = 'absolute';
+        datePickerContainer.style.zIndex = '9999';
+        
+        
+        document.body.appendChild(datePickerContainer);
+    }
+    
+    
+    const dateInput = document.createElement('input');
+    dateInput.setAttribute('type', 'text');
+    dateInput.setAttribute('id', 'headerDatePicker');
+    dateInput.style.display = 'none';
+    datePickerContainer.appendChild(dateInput);
+    
+    
+    const buttonReference = document.getElementById('headerCalendarBtn');
+    
+    
+    const fp = flatpickr("#headerDatePicker", {
+        dateFormat: "Y-m-d",
+        defaultDate: "today",
+        appendTo: datePickerContainer,
+        inline: true,
+        static: true,
+        onChange: function (selectedDates, dateStr) {
+            if (dateStr) {
+                const formattedDate = dateStr.replaceAll("-", "_");
+                fetch(`/get?timestamp=${formattedDate}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const content = data.data;
+                    if (content) {
+                        
+                        hugerte.get('editorjs').setContent(content);
+
+                        const displayDate = new Date(dateStr);
+                        const displayFormattedDate = displayDate.toLocaleString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                        });
+                        
+                        const currDateElement = document.getElementById("curr-date");
+                        if (currDateElement) {
+                            currDateElement.innerHTML = "Diary - " + displayFormattedDate;
+                        }
+                        
+                        
+                        const normalDateElement = document.getElementById("normal-date");
+                        if (normalDateElement) {
+                            normalDateElement.innerHTML = dateStr;
+                        }
+                        
+                        
+                        if (window.Swal) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Loaded!',
+                                text: 'Your diary content has been loaded successfully.',
+                                toast: true,
+                                position: 'bottom-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+                        }
+                    } else {
+                        
+                        hugerte.get('editorjs').setContent("");
+                        
+                        const displayDate = new Date(dateStr);
+                        const displayFormattedDate = displayDate.toLocaleString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                        });
+                        
+                        const currDateElement = document.getElementById("curr-date");
+                        if (currDateElement) {
+                            currDateElement.innerHTML = "Diary - " + displayFormattedDate;
+                        }
+                        
+                        
+                        const normalDateElement = document.getElementById("normal-date");
+                        if (normalDateElement) {
+                            normalDateElement.innerHTML = dateStr;
+                        }
+                        
+                        
+                        if (window.Swal) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'New Entry',
+                                text: 'Creating a new entry for this date.',
+                                toast: true,
+                                position: 'bottom-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+                        }
+                    }
+                    
+                    
+                    datePickerContainer.style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    if (window.Swal) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while fetching the content.',
+                            toast: true,
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    }
+                });
+            }
+        }
+    });
+    
+    
+    buttonReference.addEventListener('click', function(e) {
+        e.stopPropagation(); 
+        
+        if (datePickerContainer.style.display === 'none') {
+            
+            const btnRect = buttonReference.getBoundingClientRect();
+            datePickerContainer.style.top = (btnRect.bottom + window.scrollY) + 'px';
+            datePickerContainer.style.left = (btnRect.left + window.scrollX - 150) + 'px'; 
+            datePickerContainer.style.display = 'block';
+            
+            
+            setTimeout(() => {
+                document.addEventListener('click', closeCalendarOnClickOutside);
+            }, 100);
+        } else {
+            datePickerContainer.style.display = 'none';
+            document.removeEventListener('click', closeCalendarOnClickOutside);
+        }
+    });
+    
+    
+    function closeCalendarOnClickOutside(event) {
+        if (!datePickerContainer.contains(event.target) && event.target !== buttonReference) {
+            datePickerContainer.style.display = 'none';
+            document.removeEventListener('click', closeCalendarOnClickOutside);
+        }
+    }
+    
+    
+    if (!document.getElementById('calendar-button-styles')) {
+        const style = document.createElement('style');
+        style.id = 'calendar-button-styles';
+        style.textContent = `
+            .calendar-icon-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                margin-left: 10px;
+                font-size: 18px;
+                vertical-align: middle;
+            }
+            
+            .calendar-icon-btn:hover {
+                opacity: 0.8;
+            }
+            
+            #headerDatePickerContainer {
+                z-index: 9999;
+                margin-top: 5px;
+                background: white;
+                border-radius: 4px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initHeaderCalendar();
+});
+
 hugerte.init({
     selector: '#editorjs',
     height: "80vh",
     width: "50vw",
     menubar: false,
     plugins: 'lists link image table code help',
-    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | savebutton CalendarButton | CorrectMistakes ConvertDiary',
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | savebutton | CorrectMistakes ConvertDiary',
     setup: function (editor) {
         editor.on('init', function () {
             pull_current_diary();
@@ -188,61 +414,6 @@ hugerte.init({
             }
         });
 
-        editor.ui.registry.addButton('CalendarButton', {
-            text: 'Calendar',
-            icon: 'calendar',
-            onAction: function () {
-                flatpickr("#datePicker", {
-                    dateFormat: "Y-m-d",
-                    defaultDate: "today",
-                    appendTo: document.body,
-                    positionElement: calendarButton,
-                    static: true,
-                    onChange: function (selectedDates, dateStr) {
-                        if (dateStr) {
-                            const formattedDate = dateStr.replaceAll("-", "_");
-                            fetch(`/get?timestamp=${formattedDate}`, {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                
-                                content = data.data
-                                if (content) {
-                                    editor.setContent(content);
-                                    const displayDate = new Date(dateStr);
-                                    const displayFormattedDate = displayDate.toLocaleString('en-US', {
-                                        month: 'short',
-                                        day: 'numeric',
-                                        year: 'numeric',
-                                    });
-                                    document.getElementById("curr-date").innerHTML = "Diary - " + displayFormattedDate;
-                                    document.getElementById("normal-date").innerHTML = getFormattedDate(dateStr);
-                                    showAlert('success', 'Loaded!', 'Your diary content has been loaded successfully.');
-                                } else {
-                                    showAlert('error', 'Error', 'No content found for the selected date.');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                showAlert('error', 'Error', 'An error occurred while fetching the content.');
-                            });
-                        }
-                    }
-                });
-
-                document.getElementById('datePicker').click();
-            }
-        });
-
-        const datePickerInput = document.createElement('input');
-        datePickerInput.setAttribute('type', 'text');
-        datePickerInput.setAttribute('id', 'datePicker');
-        datePickerInput.style.display = 'none';
-        document.body.appendChild(datePickerInput);
     }
 
 });
@@ -250,7 +421,7 @@ hugerte.init({
 websocketInput.addEventListener("change", () => {
     const urlValue = websocketInput.value.trim();
     if (!urlValue.startsWith("ws://") && !urlValue.startsWith("wss://")) {
-        statusText.textContent = "Invalid WebSocket URL (must start with ws:// or wss://)";
+        statusText.textContent = "Invalid WebSocket URL (must start with ws.";
         return;
     }
     websocketUrl = urlValue;
