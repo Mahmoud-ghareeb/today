@@ -2,7 +2,7 @@
 
 Today is a FastAPI-based application that enables users to transcribe and store their diary entries through an online speech-to-text system. 
 
-![Today Web App](src/web/static/app.png)
+![Today Web App](src/web/static/features.gif)
 
 ## Features
 - **Speech-to-Text Transcription**: Uses Whisper ASR for converting spoken words into text.
