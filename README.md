@@ -8,7 +8,8 @@ Today is a FastAPI-based application that enables users to transcribe and store 
 - **Speech-to-Text Transcription**: Uses Whisper ASR for converting spoken words into text.
 - **Real-time Processing**: Utilizes WebSocket connections to process audio streams in real time.
 - **Diary Saving & Retrieval**: Stores diary entries with timestamps and enables users to retrieve past entries.
-- **Grammar Correction**: Uses an LLM to correct grammatical mistakes in diary entries.
+- **Grammar Correction**: Uses an LLM to correct grammatical mistakes in diary entries you can use any open source LLM you like.
+- **privacy**: completly private to you `No APIs used`
 
 ## Technologies Used
 - **Whisper ASR**: Automatic Speech Recognition model for transcriptions.
