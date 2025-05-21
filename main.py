@@ -71,7 +71,7 @@ async def lifespan(app: FastAPI):
 
     diarization = None
     
-    # llm = get_llm()
+    llm = get_llm()
     
     yield
 
@@ -235,7 +235,7 @@ os.makedirs("diaries", exist_ok=True)
 
 @app.post("/save")
 async def save_content(request: SaveRequest):
-    # try:
+    try:
         timestamp = request.timestamp
         print(timestamp)
         filename = f"diaries/diary_{timestamp}.txt"
@@ -244,8 +244,8 @@ async def save_content(request: SaveRequest):
             file.write(request.content)
 
         return {"success": True, "message": "File saved successfully!", "filename": filename}
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail=f"Failed to save the file: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save the file: {str(e)}")
     
 @app.get("/get")
 async def get_content(timestamp):

@@ -10,14 +10,14 @@ app:
   max_bytes_per_sec: 32000 * 5
 
   llm:
-    model: "mistralai/Mistral-7B-Instruct-v0.2"  # Model to use
-    device: "cuda"  # Device to run on (cuda/cpu)
-    max_tokens: 1024  # Maximum tokens to generate
-    temperature: 0.0  # Temperature for generation (0.0 for deterministic)
-    top_p: 0.95  # Top-p sampling parameter
-    top_k: 50  # Top-k sampling parameter
-    repetition_penalty: 1.1  # Penalty for repeating tokens
-    stop_tokens: ["</p>", "---", "==="]  # Tokens that stop generation
+    model: "context-labs/neuralmagic-llama-3.1-70b-instruct-FP8"
+    device: "cuda"  
+    max_tokens: 8000  
+    temperature: 0.0  
+    top_p: 0.95  
+    top_k: 50  
+    repetition_penalty: 1.1  
+    stop_tokens: ["</p>", "---", "==="]  
 
   prompts:
     convert_to_diary: |
