@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  today:
+    build: .
+    image: today
+    command: python main.py
+    restart: unless-stopped
+    ports:
+      - 8008:8008
+    volumes:
+      - .:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /var/run/user/$(id -u)/pulse:/var/run/user/1000/pulse
+      - /dev/snd:/dev/snd
+    environment:
+      - DISPLAY=${DISPLAY}
+      - PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
+      - PULSE_COOKIE=/home/$USER/.config/pulse/cookie
+      - HF_TOKEN=${HF_TOKEN}
+      - CUDA_VISIBLE_DEVICES=1
+    devices:
+      - /dev/snd:/dev/snd
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    privileged: true
+    network_mode: host

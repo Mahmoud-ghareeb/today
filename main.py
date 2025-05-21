@@ -27,10 +27,20 @@ import traceback
 import os
 
 from huggingface_hub import login
-login(token=os.getenv("HF_TOKEN"))
-
 
 load_dotenv()
+
+# Handle Hugging Face token
+hf_token = os.getenv("HF_TOKEN")
+if hf_token:
+    try:
+        login(token=hf_token)
+    except Exception as e:
+        logging.warning(f"Failed to login to Hugging Face: {e}")
+else:
+    logging.warning("No Hugging Face token provided. Some features may not work.")
+
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logging.getLogger().setLevel(logging.WARNING)
@@ -61,7 +71,7 @@ async def lifespan(app: FastAPI):
 
     diarization = None
     
-    llm = get_llm()
+    # llm = get_llm()
     
     yield
 
