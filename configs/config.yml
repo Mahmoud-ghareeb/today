@@ -9,6 +9,16 @@ app:
   bytes_per_sample: 2
   max_bytes_per_sec: 32000 * 5
 
+  llm:
+    model: "mistralai/Mistral-7B-Instruct-v0.2"  # Model to use
+    device: "cuda"  # Device to run on (cuda/cpu)
+    max_tokens: 1024  # Maximum tokens to generate
+    temperature: 0.0  # Temperature for generation (0.0 for deterministic)
+    top_p: 0.95  # Top-p sampling parameter
+    top_k: 50  # Top-k sampling parameter
+    repetition_penalty: 1.1  # Penalty for repeating tokens
+    stop_tokens: ["</p>", "---", "==="]  # Tokens that stop generation
+
   prompts:
     convert_to_diary: |
       You are a diary formatting specialist. Transform the following text into a well-structured diary entry with:

@@ -40,7 +40,7 @@ cp .env.example .env
 ```
 3. Build and run the container:
 ```shell
-docker-compose up --build -d
+docker compose up --build -d
 ```
 4. The application will automatically start when you run `docker-compose up`. Access it at:
 - Web Interface: http://localhost:8008
