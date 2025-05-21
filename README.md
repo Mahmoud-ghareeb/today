@@ -29,7 +29,7 @@ Ensure you have the following installed:
 
 ### Setup
 #### Option 1: Docker Installation (Recommended)
-1. Make sure you have Docker and Docker Compose installed
+1. Make sure you have **Docker** and **Docker Compose** installed
 2. clone the repo 
 ```shell
 git clone https://github.com/Mahmoud-ghareeb/today.git
@@ -38,11 +38,12 @@ git clone https://github.com/Mahmoud-ghareeb/today.git
 ```shell
 cp .env.example .env
 ```
-3. Build and run the container:
+4. Add your HF token to the **.env** file
+5. Build and run the container:
 ```shell
 docker compose up --build -d
 ```
-4. The application will automatically start when you run `docker-compose up`. Access it at:
+6. The application will automatically start when you run `docker-compose up`. Access it at:
 - Web Interface: http://localhost:8008
 
 
