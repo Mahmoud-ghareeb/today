@@ -25,8 +25,28 @@ Ensure you have the following installed:
 - Whisper ASR dependencies
 - Hugging Face API Token (for LLM access)
 - cudnn
+- Docker and Docker Compose (for containerized setup)
 
 ### Setup
+#### Option 1: Docker Installation (Recommended)
+1. Make sure you have Docker and Docker Compose installed
+2. clone the repo 
+```shell
+git clone https://github.com/Mahmoud-ghareeb/today.git
+```
+3. Create a `.env` file with your Hugging Face token:
+```shell
+cp .env.example .env
+```
+3. Build and run the container:
+```shell
+docker-compose up --build -d
+```
+4. The application will automatically start when you run `docker-compose up`. Access it at:
+- Web Interface: http://localhost:8008
+
+
+#### Option 2: Local Installation
 1. create conda env
 ```shell
 conda create -n today python==3.12
@@ -49,8 +69,7 @@ pip install -r requirements.txt
 6. Set up environment variables:
 make a copy of `.env.example` file rename it to `.env` and fill the required information
 
-## Running the Application
-To start the FastAPI server:
+7. To start the FastAPI server:
 ```shell
 python main.py
 ```
@@ -76,7 +95,7 @@ python main.py
 ## Under Development
 - [x] Correct Mistakes
 - [x] Diary Formatting
-- [ ] Docker Support
+- [x] Docker Support
 
 ## Todos
 - [ ] Dark mode
